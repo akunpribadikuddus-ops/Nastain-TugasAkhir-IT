@@ -1,0 +1,1037 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tabungin - Aplikasi Tabungan Digital</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f4f7fb;
+    color: #172033;
+    transition: .3s;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+}
+
+/* LOGIN */
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #2563eb, #4f46e5);
+}
+
+.login-box {
+    width: 380px;
+    background: white;
+    padding: 35px;
+    border-radius: 22px;
+    box-shadow: 0 20px 50px rgba(0,0,0,.2);
+}
+
+.logo {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.logo h1 {
+    color: #2563eb;
+    font-size: 30px;
+}
+
+.logo p {
+    color: #777;
+    margin-top: 7px;
+}
+
+.input-group {
+    margin-bottom: 18px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: bold;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    outline: none;
+}
+
+.input-group input:focus {
+    border-color: #2563eb;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    background: #2563eb;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.demo {
+    text-align: center;
+    margin-top: 15px;
+    color: #777;
+    font-size: 13px;
+}
+
+/* APP */
+.app {
+    display: none;
+}
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 240px;
+    height: 100vh;
+    background: #111827;
+    color: white;
+    padding: 25px 15px;
+}
+
+.sidebar-logo {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.sidebar-logo h2 {
+    color: #60a5fa;
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar li {
+    margin: 8px 0;
+}
+
+.sidebar button {
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    color: #cbd5e1;
+    padding: 13px 15px;
+    border-radius: 10px;
+    font-size: 15px;
+}
+
+.sidebar button:hover,
+.sidebar button.active {
+    background: #2563eb;
+    color: white;
+}
+
+.logout {
+    position: absolute;
+    bottom: 25px;
+    left: 15px;
+    width: calc(100% - 30px) !important;
+    background: #dc2626 !important;
+    color: white !important;
+}
+
+/* MAIN */
+.main {
+    margin-left: 240px;
+    padding: 25px;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.topbar h1 {
+    font-size: 25px;
+}
+
+.user-area {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.theme-btn {
+    background: white;
+    padding: 10px 13px;
+    border-radius: 10px;
+    font-size: 18px;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    background: #2563eb;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+/* CARDS */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+}
+
+.card {
+    background: white;
+    padding: 22px;
+    border-radius: 17px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.05);
+}
+
+.card p {
+    color: #777;
+    font-size: 14px;
+}
+
+.card h2 {
+    margin-top: 10px;
+    font-size: 24px;
+}
+
+.blue {
+    border-left: 5px solid #2563eb;
+}
+
+.green {
+    border-left: 5px solid #16a34a;
+}
+
+.red {
+    border-left: 5px solid #dc2626;
+}
+
+.orange {
+    border-left: 5px solid #f59e0b;
+}
+
+/* CONTENT */
+.content-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.section {
+    background: white;
+    padding: 22px;
+    border-radius: 17px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.05);
+}
+
+.section h3 {
+    margin-bottom: 18px;
+}
+
+/* TARGET */
+.target {
+    margin-top: 20px;
+}
+
+.progress {
+    width: 100%;
+    height: 12px;
+    background: #e5e7eb;
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 15px 0;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg,#2563eb,#4f46e5);
+    width: 0%;
+    transition: .5s;
+}
+
+.target-info {
+    display: flex;
+    justify-content: space-between;
+    color: #666;
+    font-size: 14px;
+}
+
+/* BUTTONS */
+.actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.action-btn {
+    padding: 15px;
+    border-radius: 12px;
+    color: white;
+    font-weight: bold;
+}
+
+.deposit {
+    background: #16a34a;
+}
+
+.withdraw {
+    background: #dc2626;
+}
+
+.set-target {
+    background: #2563eb;
+}
+
+.reset {
+    background: #f59e0b;
+}
+
+/* TRANSACTION */
+.transaction {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.transaction:last-child {
+    border-bottom: none;
+}
+
+.transaction small {
+    color: #888;
+}
+
+.income {
+    color: #16a34a;
+    font-weight: bold;
+}
+
+.expense {
+    color: #dc2626;
+    font-weight: bold;
+}
+
+/* MODAL */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.55);
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.modal-box {
+    width: 380px;
+    background: white;
+    padding: 25px;
+    border-radius: 18px;
+}
+
+.modal-box h2 {
+    margin-bottom: 20px;
+}
+
+.modal-box input {
+    width: 100%;
+    padding: 13px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.modal-actions button {
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+}
+
+.confirm {
+    background: #2563eb;
+    color: white;
+}
+
+.cancel {
+    background: #e5e7eb;
+}
+
+/* DARK MODE */
+body.dark {
+    background: #0f172a;
+    color: #e5e7eb;
+}
+
+body.dark .card,
+body.dark .section,
+body.dark .theme-btn,
+body.dark .modal-box {
+    background: #1e293b;
+    color: white;
+}
+
+body.dark .card p,
+body.dark .target-info {
+    color: #94a3b8;
+}
+
+body.dark .transaction {
+    border-color: #334155;
+}
+
+body.dark .progress {
+    background: #334155;
+}
+
+/* RESPONSIVE */
+@media(max-width: 1000px) {
+    .cards {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media(max-width: 700px) {
+    .sidebar {
+        width: 70px;
+        padding: 20px 10px;
+    }
+
+    .sidebar-logo h2 {
+        font-size: 12px;
+    }
+
+    .sidebar button {
+        text-align: center;
+        font-size: 0;
+    }
+
+    .sidebar button::first-letter {
+        font-size: 20px;
+    }
+
+    .main {
+        margin-left: 70px;
+        padding: 15px;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+    .topbar h1 {
+        font-size: 19px;
+    }
+
+    .login-box {
+        width: 90%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div class="login-page" id="loginPage">
+    <div class="login-box">
+        <div class="logo">
+            <h1>💰 Tabungin</h1>
+            <p>Tabungan Digital Modern</p>
+        </div>
+
+        <div class="input-group">
+            <label>Email</label>
+            <input type="email" id="email" placeholder="Masukkan email">
+        </div>
+
+        <div class="input-group">
+            <label>Password</label>
+            <input type="password" id="password" placeholder="Masukkan password">
+        </div>
+
+        <button class="login-btn" onclick="login()">Masuk</button>
+
+        <div class="demo">
+            Demo: masukkan email dan password apa saja
+        </div>
+    </div>
+</div>
+
+<!-- APP -->
+<div class="app" id="app">
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <h2>💰 Tabungin</h2>
+        </div>
+
+        <ul>
+            <li><button class="active">🏠 Dashboard</button></li>
+            <li><button onclick="openModal('deposit')">➕ Tambah Tabungan</button></li>
+            <li><button onclick="openModal('withdraw')">💸 Tarik Uang</button></li>
+            <li><button onclick="openModal('target')">🎯 Target</button></li>
+            <li><button onclick="showHistory()">📜 Riwayat</button></li>
+        </ul>
+
+        <button class="sidebar button logout" onclick="logout()">🚪 Keluar</button>
+    </aside>
+
+    <main class="main">
+
+        <div class="topbar">
+            <div>
+                <h1>Dashboard</h1>
+                <p>Selamat datang kembali 👋</p>
+            </div>
+
+            <div class="user-area">
+                <button class="theme-btn" onclick="toggleDark()">🌙</button>
+                <div class="avatar" id="avatar">U</div>
+            </div>
+        </div>
+
+        <!-- CARDS -->
+        <div class="cards">
+
+            <div class="card blue">
+                <p>💰 Saldo Tabungan</p>
+                <h2 id="balance">Rp 0</h2>
+            </div>
+
+            <div class="card green">
+                <p>📈 Total Pemasukan</p>
+                <h2 id="income">Rp 0</h2>
+            </div>
+
+            <div class="card red">
+                <p>📉 Total Pengeluaran</p>
+                <h2 id="expense">Rp 0</h2>
+            </div>
+
+            <div class="card orange">
+                <p>🎯 Target Tabungan</p>
+                <h2 id="targetAmount">Rp 0</h2>
+            </div>
+
+        </div>
+
+        <div class="content-grid">
+
+            <!-- GRAFIK -->
+            <div class="section">
+                <h3>📊 Grafik Keuangan</h3>
+                <canvas id="financeChart"></canvas>
+            </div>
+
+            <!-- ACTION -->
+            <div class="section">
+                <h3>⚡ Aksi Cepat</h3>
+
+                <div class="actions">
+                    <button class="action-btn deposit"
+                        onclick="openModal('deposit')">
+                        ➕ Tambah
+                    </button>
+
+                    <button class="action-btn withdraw"
+                        onclick="openModal('withdraw')">
+                        💸 Tarik
+                    </button>
+
+                    <button class="action-btn set-target"
+                        onclick="openModal('target')">
+                        🎯 Target
+                    </button>
+
+                    <button class="action-btn reset"
+                        onclick="resetData()">
+                        🔄 Reset
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- TARGET -->
+        <div class="section target">
+            <h3>🎯 Target Tabungan</h3>
+
+            <div class="target-info">
+                <span id="targetName">Belum ada target</span>
+                <span id="targetPercent">0%</span>
+            </div>
+
+            <div class="progress">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+
+            <div class="target-info">
+                <span id="targetSaved">Rp 0</span>
+                <span id="targetGoal">Rp 0</span>
+            </div>
+        </div>
+
+        <!-- RIWAYAT -->
+        <div class="section target">
+            <h3>📜 Transaksi Terbaru</h3>
+            <div id="transactions"></div>
+        </div>
+
+    </main>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+
+    <div class="modal-box">
+
+        <h2 id="modalTitle">Tambah Tabungan</h2>
+
+        <input type="text" id="modalName"
+               placeholder="Keterangan">
+
+        <input type="number" id="modalAmount"
+               placeholder="Jumlah uang">
+
+        <div class="modal-actions">
+            <button class="cancel" onclick="closeModal()">
+                Batal
+            </button>
+
+            <button class="confirm" onclick="submitModal()">
+                Simpan
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+/* DATA */
+let data = JSON.parse(localStorage.getItem("tabunginData")) || {
+    balance: 0,
+    income: 0,
+    expense: 0,
+    target: 0,
+    targetName: "",
+    transactions: []
+};
+
+let currentAction = "";
+
+let chart;
+
+
+/* FORMAT RUPIAH */
+function rupiah(number) {
+    return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        maximumFractionDigits: 0
+    }).format(number);
+}
+
+
+/* LOGIN */
+function login() {
+
+    const email = document.getElementById("email").value;
+
+    if (!email) {
+        alert("Silakan masukkan email!");
+        return;
+    }
+
+    localStorage.setItem("tabunginUser", email);
+
+    document.getElementById("loginPage").style.display = "none";
+    document.getElementById("app").style.display = "block";
+
+    document.getElementById("avatar").innerText =
+        email.charAt(0).toUpperCase();
+
+    updateUI();
+}
+
+
+/* LOGOUT */
+function logout() {
+
+    document.getElementById("app").style.display = "none";
+    document.getElementById("loginPage").style.display = "flex";
+
+}
+
+
+/* MODAL */
+function openModal(type) {
+
+    currentAction = type;
+
+    document.getElementById("modal").style.display = "flex";
+
+    document.getElementById("modalName").value = "";
+    document.getElementById("modalAmount").value = "";
+
+    if (type === "deposit") {
+        document.getElementById("modalTitle").innerText =
+            "➕ Tambah Tabungan";
+        document.getElementById("modalAmount").placeholder =
+            "Jumlah tabungan";
+    }
+
+    if (type === "withdraw") {
+        document.getElementById("modalTitle").innerText =
+            "💸 Tarik Uang";
+        document.getElementById("modalAmount").placeholder =
+            "Jumlah penarikan";
+    }
+
+    if (type === "target") {
+        document.getElementById("modalTitle").innerText =
+            "🎯 Target Tabungan";
+        document.getElementById("modalAmount").placeholder =
+            "Target uang";
+    }
+}
+
+
+function closeModal() {
+    document.getElementById("modal").style.display = "none";
+}
+
+
+/* SUBMIT */
+function submitModal() {
+
+    const name =
+        document.getElementById("modalName").value || "Transaksi";
+
+    const amount =
+        Number(document.getElementById("modalAmount").value);
+
+    if (!amount || amount <= 0) {
+        alert("Masukkan jumlah yang benar!");
+        return;
+    }
+
+    /* TAMBAH */
+    if (currentAction === "deposit") {
+
+        data.balance += amount;
+        data.income += amount;
+
+        data.transactions.unshift({
+            name: name,
+            amount: amount,
+            type: "income",
+            date: new Date().toLocaleString("id-ID")
+        });
+    }
+
+    /* TARIK */
+    if (currentAction === "withdraw") {
+
+        if (amount > data.balance) {
+            alert("Saldo tidak mencukupi!");
+            return;
+        }
+
+        data.balance -= amount;
+        data.expense += amount;
+
+        data.transactions.unshift({
+            name: name,
+            amount: amount,
+            type: "expense",
+            date: new Date().toLocaleString("id-ID")
+        });
+    }
+
+    /* TARGET */
+    if (currentAction === "target") {
+
+        data.target = amount;
+        data.targetName = name;
+    }
+
+    saveData();
+
+    closeModal();
+
+    updateUI();
+}
+
+
+/* SAVE */
+function saveData() {
+    localStorage.setItem(
+        "tabunginData",
+        JSON.stringify(data)
+    );
+}
+
+
+/* UPDATE UI */
+function updateUI() {
+
+    document.getElementById("balance").innerText =
+        rupiah(data.balance);
+
+    document.getElementById("income").innerText =
+        rupiah(data.income);
+
+    document.getElementById("expense").innerText =
+        rupiah(data.expense);
+
+    document.getElementById("targetAmount").innerText =
+        rupiah(data.target);
+
+    document.getElementById("targetName").innerText =
+        data.targetName || "Belum ada target";
+
+    document.getElementById("targetSaved").innerText =
+        rupiah(data.balance);
+
+    document.getElementById("targetGoal").innerText =
+        rupiah(data.target);
+
+    let percent = 0;
+
+    if (data.target > 0) {
+        percent =
+            Math.min(
+                Math.round((data.balance / data.target) * 100),
+                100
+            );
+    }
+
+    document.getElementById("targetPercent").innerText =
+        percent + "%";
+
+    document.getElementById("progressBar").style.width =
+        percent + "%";
+
+    showTransactions();
+
+    updateChart();
+}
+
+
+/* TRANSACTIONS */
+function showTransactions() {
+
+    const container =
+        document.getElementById("transactions");
+
+    container.innerHTML = "";
+
+    if (data.transactions.length === 0) {
+
+        container.innerHTML =
+            "<p style='color:#888'>Belum ada transaksi.</p>";
+
+        return;
+    }
+
+    data.transactions
+        .slice(0, 5)
+        .forEach(transaction => {
+
+            const div =
+                document.createElement("div");
+
+            div.className = "transaction";
+
+            div.innerHTML = `
+                <div>
+                    <strong>${transaction.name}</strong>
+                    <br>
+                    <small>${transaction.date}</small>
+                </div>
+
+                <span class="${transaction.type}">
+                    ${transaction.type === "income" ? "+" : "-"}
+                    ${rupiah(transaction.amount)}
+                </span>
+            `;
+
+            container.appendChild(div);
+        });
+}
+
+
+/* SHOW ALL HISTORY */
+function showHistory() {
+
+    if (data.transactions.length === 0) {
+        alert("Belum ada transaksi.");
+        return;
+    }
+
+    let text = "RIWAYAT TRANSAKSI\n\n";
+
+    data.transactions.forEach((t, i) => {
+
+        text += `${i + 1}. ${t.name}\n`;
+        text += `${t.type === "income" ? "+" : "-"} ${rupiah(t.amount)}\n`;
+        text += `${t.date}\n\n`;
+
+    });
+
+    alert(text);
+}
+
+
+/* CHART */
+function updateChart() {
+
+    const ctx =
+        document.getElementById("financeChart");
+
+    if (chart) {
+        chart.destroy();
+    }
+
+    chart = new Chart(ctx, {
+
+        type: "doughnut",
+
+        data: {
+            labels: [
+                "Saldo",
+                "Pemasukan",
+                "Pengeluaran"
+            ],
+
+            datasets: [{
+                data: [
+                    Math.max(data.balance, 0),
+                    data.income,
+                    data.expense
+                ]
+            }]
+        },
+
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: "bottom"
+                }
+            }
+        }
+    });
+}
+
+
+/* DARK MODE */
+function toggleDark() {
+
+    document.body.classList.toggle("dark");
+
+    localStorage.setItem(
+        "darkMode",
+        document.body.classList.contains("dark")
+    );
+}
+
+
+/* RESET */
+function resetData() {
+
+    const confirmReset =
+        confirm(
+            "Apakah kamu yakin ingin menghapus semua data?"
+        );
+
+    if (!confirmReset) return;
+
+    data = {
+        balance: 0,
+        income: 0,
+        expense: 0,
+        target: 0,
+        targetName: "",
+        transactions: []
+    };
+
+    saveData();
+
+    updateUI();
+}
+
+
+/* AUTO LOGIN */
+window.onload = function() {
+
+    const user =
+        localStorage.getItem("tabunginUser");
+
+    if (user) {
+
+        document.getElementById("loginPage").style.display =
+            "none";
+
+        document.getElementById("app").style.display =
+            "block";
+
+        document.getElementById("avatar").innerText =
+            user.charAt(0).toUpperCase();
+
+        updateUI();
+    }
+
+    if (
+        localStorage.getItem("darkMode") === "true"
+    ) {
+        document.body.classList.add("dark");
+    }
+};
+
+</script>
+
+</body>
+</html>
+```
